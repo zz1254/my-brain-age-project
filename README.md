@@ -11,7 +11,16 @@ data/
 └── labels.csv  # columns: filename,age
 ```
 
-Each `.npy` file should contain a single-channel volume with shape `(1, 113, 137, 113)`.
+Each `.npy` file should contain a single-channel volume with shape `(1, 113, 137, 113)`. The filename pattern encodes a subject ID and timepoint, e.g., `swm002_S_0295_0.npy`, `swm002_S_0295_1.npy`, where `swm002_S_0295` is the shared subject identifier.
+
+On the first run, the training pipeline performs a **subject-wise split** (using the subject ID, not individual scans) to avoid timepoint leakage and writes:
+
+```
+data/
+├── labels_train.csv
+├── labels_val.csv
+└── labels_test.csv
+```
 
 ## Installation
 ```bash

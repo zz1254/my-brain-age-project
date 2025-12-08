@@ -6,6 +6,9 @@ import torch
 DATA_DIR = Path("data")
 IMAGES_DIR = DATA_DIR / "images"
 LABELS_CSV = DATA_DIR / "labels.csv"
+LABELS_TRAIN_CSV = DATA_DIR / "labels_train.csv"
+LABELS_VAL_CSV = DATA_DIR / "labels_val.csv"
+LABELS_TEST_CSV = DATA_DIR / "labels_test.csv"
 CHECKPOINT_DIR = Path("checkpoints")
 OUTPUT_DIR = Path("outputs")
 
