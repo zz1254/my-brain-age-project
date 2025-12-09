@@ -1,9 +1,11 @@
-"""Model definition for MRI brain age prediction using 3D ResNet18."""
+"""Model definitions for MRI brain age prediction."""
 from typing import Optional
 
 import torch
 import torch.nn as nn
 from torchvision.models.video import r3d_18
+
+from unet3d import BrainAgeUNet3D
 
 
 class BrainAgeResNet3D(nn.Module):
@@ -38,14 +40,7 @@ class BrainAgeResNet3D(nn.Module):
         self.backbone.stem[0] = new_conv  # type: ignore[index]
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Forward pass that returns a single age prediction per sample.
-
-        Args:
-            x: Tensor of shape (batch_size, 1, 113, 137, 113).
-
-        Returns:
-            Tensor of shape (batch_size,) containing age predictions.
-        """
+        """Forward pass that returns a single age prediction per sample."""
         x = self.backbone.stem(x)
         x = self.backbone.layer1(self.backbone.maxpool(x))
         x = self.backbone.layer2(x)
@@ -57,12 +52,24 @@ class BrainAgeResNet3D(nn.Module):
         return x.squeeze(-1)
 
 
-def build_model(dropout: float = 0.0, device: Optional[torch.device] = None) -> BrainAgeResNet3D:
+def build_model(
+    backbone: str = "unet",
+    dropout: float = 0.0,
+    base_channels: int = 32,
+    device: Optional[torch.device] = None,
+) -> nn.Module:
     """Utility to create and move the model to the appropriate device."""
-    model = BrainAgeResNet3D(dropout=dropout)
+
+    if backbone == "resnet3d":
+        model: nn.Module = BrainAgeResNet3D(dropout=dropout)
+    elif backbone == "unet":
+        model = BrainAgeUNet3D(dropout=dropout, base_channels=base_channels)
+    else:
+        raise ValueError(f"Unknown backbone: {backbone}")
+
     if device is not None:
         model.to(device)
     return model
 
 
-__all__ = ["BrainAgeResNet3D", "build_model"]
+__all__ = ["BrainAgeResNet3D", "BrainAgeUNet3D", "build_model"]

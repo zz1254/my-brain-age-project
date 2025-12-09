@@ -47,7 +47,12 @@ def main() -> None:
     log(f"Using device: {device}")
 
     _, _, test_loader = create_dataloaders(config)
-    model = build_model(device=device)
+    model = build_model(
+        backbone=config.BACKBONE,
+        dropout=config.DROPOUT,
+        base_channels=config.UNET_BASE_CHANNELS,
+        device=device,
+    )
 
     checkpoint_path = config.CHECKPOINT_DIR / "best_model.pth"
     if not checkpoint_path.exists():

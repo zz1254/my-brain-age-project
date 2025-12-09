@@ -98,7 +98,12 @@ def main() -> None:
     log(f"Using device: {device}")
 
     train_loader, val_loader, _ = create_dataloaders(config)
-    model = build_model(device=device)
+    model = build_model(
+        backbone=config.BACKBONE,
+        dropout=config.DROPOUT,
+        base_channels=config.UNET_BASE_CHANNELS,
+        device=device,
+    )
     total_params, trainable_params = count_parameters(model)
     log(f"Model parameters: total={total_params:,} trainable={trainable_params:,}")
 

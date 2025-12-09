@@ -20,6 +20,9 @@ WEIGHT_DECAY = 1e-4
 NUM_WORKERS = 2
 TRAIN_VAL_TEST_SPLIT = (0.7, 0.15, 0.15)
 RANDOM_SEED = 42
+DROPOUT = 0.0
+BACKBONE = "unet"  # options: "unet", "resnet3d"
+UNET_BASE_CHANNELS = 32
 
 # Device selection
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"

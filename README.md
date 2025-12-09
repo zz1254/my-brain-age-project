@@ -1,6 +1,8 @@
 # MRI Brain Age Prediction
 
-This project provides a complete pipeline for MRI brain age prediction using a 3D ResNet-18 model built with PyTorch. It loads volumetric MRI data stored as NumPy arrays, trains a regression model to predict brain age, and evaluates performance with common metrics.
+This project provides a complete pipeline for MRI brain age prediction using PyTorch. It loads volumetric MRI data stored as NumPy arrays, trains a regression model to predict brain age, and evaluates performance with common metrics.
+
+The default backbone is a **3D U-Net** that outputs a voxel-wise age map and regresses scan-level age via spatial averaging. A ResNet-18 3D backbone remains available for comparison by switching a configuration flag.
 
 ## Data organization
 ```
@@ -31,6 +33,8 @@ pip install -r requirements.txt
 ```bash
 python train.py
 ```
+
+Set `BACKBONE` in `config.py` to `"unet"` (default) or `"resnet3d"`, and adjust `UNET_BASE_CHANNELS` / `DROPOUT` as needed.
 
 ## Evaluation
 After training produces `checkpoints/best_model.pth`, evaluate on the held-out test set:
